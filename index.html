@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Para Nós Dois</title>
+  <style>
+    body {
+      background: #ffeef0;
+      font-family: sans-serif;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .flower {
+      margin-top: 30px;
+      position: relative;
+      width: 100px;
+      height: 100px;
+    }
+
+    .petal {
+      width: 60px;
+      height: 60px;
+      background: #e91e63;
+      border-radius: 50% 50% 0 0;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      transform-origin: bottom center;
+      transform: rotate(0deg) scale(0);
+      transition: transform 1s ease-in-out;
+    }
+
+    .petal.open { scale: 1; }
+    .petal.open-1 { transform: rotate(0deg) scale(1); }
+    .petal.open-2 { transform: rotate(60deg) scale(1); }
+    .petal.open-3 { transform: rotate(120deg) scale(1); }
+    .petal.open-4 { transform: rotate(180deg) scale(1); }
+    .petal.open-5 { transform: rotate(240deg) scale(1); }
+    .petal.open-6 { transform: rotate(300deg) scale(1); }
+
+    .center {
+      width: 40px;
+      height: 40px;
+      background: gold;
+      border-radius: 50%;
+      position: absolute;
+      top: 40px;
+      left: 40px;
+      z-index: 1;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .center.visible { opacity: 1; }
+
+    .stem {
+      position: absolute;
+      width: 10px;
+      height: 100px;
+      background: #4caf50;
+      top: 100px;
+      left: 45px;
+    }
+
+    .leaf {
+      width: 40px;
+      height: 20px;
+      background: #388e3c;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .leaf.left { transform: rotate(-30deg); top: 140px; left: 0; }
+    .leaf.right { transform: rotate(30deg); top: 160px; left: 50px; }
+
+    .spotify-card {
+      margin-top: 60px;
+      width: 300px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .carousel {
+      margin-top: 40px;
+      width: 90%;
+      max-width: 350px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .carousel img {
+      width: 100%;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .counter {
+      margin-top: 40px;
+      font-size: 20px;
+      color: #333;
+      background: #fff0f3;
+      padding: 10px 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🌸 Flor -->
+  <div class="flower">
+    <div class="petal" id="p1"></div>
+    <div class="petal" id="p2"></div>
+    <div class="petal" id="p3"></div>
+    <div class="petal" id="p4"></div>
+    <div class="petal" id="p5"></div>
+    <div class="petal" id="p6"></div>
+    <div class="center" id="center"></div>
+    <div class="stem"></div>
+    <div class="leaf left"></div>
+    <div class="leaf right"></div>
+  </div>
+
+  <br><br><br>
+  <!-- 🎵 Música -->
+  <div class="spotify-card">
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/0iTeuXPmT0hcTITPkICg2v?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+
+  <!-- 📸 Carrossel -->
+  <div class="carousel">
+    <div class="carousel-track" id="carousel-track">
+      <img src="./img1.jpeg" alt="imagem 1">
+      <img src="./img2.jpeg" alt="imagem 2">
+      <img src="./img3.jpeg" alt="imagem 3">
+    </div>
+  </div>
+
+  <!-- ⏳ Contador -->
+  <div class="counter" id="counter"></div>
+  <br><br><br>
+  <script>  
+    // 🌸 Flor desabrochando
+    window.onload = () => {
+      const petals = [
+        { id: 'p1', class: 'open-1' },
+        { id: 'p2', class: 'open-2' },
+        { id: 'p3', class: 'open-3' },
+        { id: 'p4', class: 'open-4' },
+        { id: 'p5', class: 'open-5' },
+        { id: 'p6', class: 'open-6' }
+      ];
+
+      petals.forEach((petal, index) => {
+        setTimeout(() => {
+          const el = document.getElementById(petal.id);
+          el.classList.add('open', petal.class);
+        }, index * 300);
+      });
+
+      setTimeout(() => {
+        document.getElementById('center').classList.add('visible');
+      }, petals.length * 300 + 300);
+
+      // ⏳ Contador de dias
+      const startDate = new Date("2025-03-06"); // <-- Altere para a data de vocês
+      const today = new Date();
+      const diffTime = Math.abs(today - startDate);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      document.getElementById("counter").innerText = `Já se passaram ${diffDays} dias desde o dia que me apaixonei por você 💖`;
+    };
+
+    // 📸 Carrossel automático
+    const track = document.getElementById("carousel-track");
+    let index = 0;
+    setInterval(() => {
+      index = (index + 1) % 3;
+      track.style.transform = `translateX(-${index * 100}%)`;
+    }, 3000);
+  </script>
+</body>
+</html>
